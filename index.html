@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Vieques Web Map</title>
+
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <link
+      rel="shortcut icon"
+      type="image/x-icon"
+      href="docs/images/favicon.ico"
+    />
+
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"
+      integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A=="
+      crossorigin=""
+    />
+    <script
+      src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"
+      integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA=="
+      crossorigin=""
+    ></script>
+
+    <style>
+      html,
+      body {
+        height: 100%;
+        margin: 0;
+      }
+
+    </style>
+
+    <style>
+      #map {
+        width: 100%;
+        height: 100%;
+      }
+
+      
+      .info {
+        padding: 6px 8px;
+        font: 14px/16px Arial, Helvetica, sans-serif;
+        background: white;
+        background: rgba(255, 255, 255, 0.8);
+        box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+        border-radius: 5px;
+      }
+      .info h4 {
+        margin: 0 0 5px;
+        color: #777;
+      }
+      .legend {
+        text-align: left;
+        line-height: 18px;
+        color: #555;
+      }
+      .legend i {
+        width: 18px;
+        height: 18px;
+        float: left;
+        margin-right: 8px;
+        opacity: 0.7;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div id="StayFocusd-infobar" style="display:none;">
+      <img
+        src="chrome-extension://laankejkbhbdhmipfmgcngdelahlfoji/common/img/eye_19x19_red.png"
+      />
+      <span id="StayFocusd-infobar-msg"></span>
+      <span id="StayFocusd-infobar-links">
+        <a id="StayFocusd-infobar-never-show">hide forever</a
+        >&nbsp;&nbsp;|&nbsp;&nbsp;
+        <a id="StayFocusd-infobar-hide">hide once</a>
+      </span>
+    </div>
+
+    <div id="map"></div>
+    <script src="airbnb-vieques.js" type="text/javascript"></script>
+    <script src="37-displaced.js" type="text/javascript"></script>
+    <script src="43-displaced.js" type="text/javascript"></script>
+    <script src="83-displaced.js" type="text/javascript"></script>
+    <script src="now-displaced.js" type="text/javascript"></script>
+
+
+    <script type="text/javascript">
+        var map = L.map("map").setView([18.129, -65.433], 12);
+
+        var osm = new L.tileLayer(
+            "http://{s}.tile.osm.org/{z}/{x}/{y}.png"
+        ).addTo(map);
+
+
+
+        // var legend = L.control({position: 'bottomright'});
+
+        function getColor(d) {
+            return d > 1000
+            ? "#245681"
+
+            : d > 250
+            ? "#003468"
+            : d > 100
+            ? "#245681"
+            : d > 50
+            ? "#49789a"
+            : d > 10
+            ? "#6e9ab4"
+            : d > 2
+            ? "#93bccd"
+            : d > 0
+            ? "#b8dee6"
+            : "#dcffff";
+            }
+
+            var geojsonMarkerOptions = {
+                radius: 3,
+                fillColor: "#8edd9e",
+                color: "#000",
+                weight: 1,
+                opacity: 0.5,
+                fillOpacity: 0.8
+            };
+
+        var build37  = L.geoJSON(buildings37, {
+        style: function(feature) {
+            return {
+            fillColor: getColor(feature.properties.number),
+            fillOpacity: 1,
+            weight: 0.5,
+            color: "#ffffff",
+            opacity: 0.7,
+
+            };
+        },
+        onEachFeature: function(feature,layer){
+        layer.on('mouseover',function() {
+            layer.setStyle({fillOpacity: 0})
+        })
+        layer.on('mouseout',function() {
+            layer.setStyle({fillOpacity: 1})
+        })
+        }
+    }).addTo(map);
+
+    var build43  = L.geoJSON(buildings43, {
+        style: function(feature) {
+            return {
+            fillColor: getColor(feature.properties.number),
+            fillOpacity: 1,
+            weight: 0.5,
+            color: "#ffffff",
+            opacity: 0.7,
+
+            };
+        },
+        onEachFeature: function(feature,layer){
+        layer.on('mouseover',function() {
+            layer.setStyle({fillOpacity: 0})
+        })
+        layer.on('mouseout',function() {
+            layer.setStyle({fillOpacity: 1})
+        })
+        }
+    }).addTo(map);
+
+    var build83  = L.geoJSON(buildings83, {
+        style: function(feature) {
+            return {
+            fillColor: getColor(feature.properties.number),
+            fillOpacity: 1,
+            weight: 0.5,
+            color: "#ffffff",
+            opacity: 0.7,
+
+            };
+        },
+        onEachFeature: function(feature,layer){
+        layer.on('mouseover',function() {
+            layer.setStyle({fillOpacity: 0})
+        })
+        layer.on('mouseout',function() {
+            layer.setStyle({fillOpacity: 1})
+        })
+        }
+    }).addTo(map);
+
+
+    var buildNow  = L.geoJSON(buildingsNow, {
+        style: function(feature) {
+            return {
+            fillColor: getColor(feature.properties.number),
+            fillOpacity: 1,
+            weight: 0.5,
+            color: "#ffffff",
+            opacity: 0.7,
+
+            };
+        },
+        onEachFeature: function(feature,layer){
+        layer.on('mouseover',function() {
+            layer.setStyle({fillOpacity: 0})
+        })
+        layer.on('mouseout',function() {
+            layer.setStyle({fillOpacity: 1})
+        })
+        }
+    }).addTo(map);
+
+    var airBb = L.geoJSON(airBnb, {
+                pointToLayer: function (feature, latlng) {
+                    return L.circleMarker(latlng, geojsonMarkerOptions);
+                
+                },
+                onEachFeature: function (feature, layer) {
+                  layer.bindPopup('<b>Name: </b>'+feature.properties.title+'<br><b> Price: </b>'+feature.properties.price);
+                },
+                
+              }).addTo(map);
+      
+        var layer1937 = L.tileLayer( 'https://cartocollective.blob.core.windows.net/vieques/v1937/{z}/{x}/{y}.png',
+                {tms: false}
+            ).addTo(map);
+
+        var layer1983 = L.tileLayer('https://cartocollective.blob.core.windows.net/vieques/v1983/{z}/{x}/{y}.png',
+                {tms: false}).addTo(map);
+
+
+        var baseLayers = {
+            "1937": layer1937,
+            "1983": layer1983,
+            "OSM": osm 
+        };
+
+        var overlayLayers = {
+          "AirBnbs": airBb,  
+          "1937 Buildings": build37,
+          "1943 Buildings": build43,
+          "1983 Buildings": build83,
+          "2019 Buildings": buildNow  
+
+        };
+
+        // legend.onAdd = function (map) {
+        //     var div = L.DomUtil.create('div', 'info legend');
+        //         labels = ['<strong>Land Use</strong>'],
+        //         categories = ['Swamp','Fruit','Brush','Pasture', 'Brush and Pasture', 'Sorghum'];
+
+        //         for (var i = 0; i < categories.length; i++) {
+
+        //                 div.innerHTML += 
+        //                 labels.push(
+        //                     '<i class="circle" style="background:' + getColor(categories[i]) + '"></i> ' +
+        //                 (categories[i] ? categories[i] : '+'));
+
+        //             }
+        //             div.innerHTML = labels.join('<br>');
+        //         return div;
+        //         };
+
+        // legend.addTo(map);
+
+        // L.control.layers(baseLayers).addTo(map);
+        L.control.layers(baseLayers, overlayLayers).addTo(map);
+      
+    </script>
+  </body>
+</html>
